@@ -3,3 +3,4 @@ venv/
 logs/
 .DS_Store
 __pycache__/
+data_raw/

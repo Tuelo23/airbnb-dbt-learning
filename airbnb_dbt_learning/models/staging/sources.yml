@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    tables:
+      - name: listings
+        description: "Raw listings export from Inside Airbnb, Cape Town, 2025-06-25 snapshot."
+        meta:
+          external_location: "read_csv_auto('data_raw/listings.csv')"
