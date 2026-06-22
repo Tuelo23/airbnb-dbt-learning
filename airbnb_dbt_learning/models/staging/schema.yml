@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: stg_neighbourhoods
+    description: "Cleaned neighbourhood reference data from Inside Airbnb."
+    columns:
+      - name: neighbourhood_id
+        description: "Surrogate key, sequential."
+        data_tests:
+          - unique
+          - not_null
+
+      - name: neighbourhood_clean
+        description: "Title-cased, whitespace-normalized neighbourhood name. Blanks become 'Unknown'."
+        data_tests:
+          - not_null
