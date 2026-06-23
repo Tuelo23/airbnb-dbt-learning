@@ -27,3 +27,25 @@ models:
               arguments:
                 to: ref('dim_neighbourhoods')
                 field: neighbourhood_id
+
+  - name: fact_calendar
+    description: "One row per listing per day, with booking status and neighbourhood FK. Basis for occupancy analysis."
+    columns:
+      - name: listing_id
+        description: "Foreign key to fact_listings."
+        data_tests:
+          - not_null
+
+      - name: date
+        description: "Calendar date."
+        data_tests:
+          - not_null
+
+      - name: neighbourhood_id
+        description: "Foreign key to dim_neighbourhoods."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_neighbourhoods')
+                field: neighbourhood_id
