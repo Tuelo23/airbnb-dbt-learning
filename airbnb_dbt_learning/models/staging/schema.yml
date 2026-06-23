@@ -10,6 +10,9 @@ models:
           - unique
           - not_null
 
+      - name: raw_neighbourhood
+        description: "Original, unmodified neighbourhood string as published by Inside Airbnb."
+
       - name: neighbourhood_clean
         description: "Title-cased, whitespace-normalized neighbourhood name. Blanks become 'Unknown'."
         data_tests:
@@ -23,6 +26,24 @@ models:
         data_tests:
           - unique
           - not_null
+
+      - name: host_id
+        description: "Identifier for the host who owns this listing."
+
+      - name: neighbourhood_raw_text
+        description: "Free-text neighbourhood as entered by the host. Not standardized; do not use for joins or grouping."
+
+      - name: neighbourhood_clean
+        description: "Standardized ward classification from Inside Airbnb (neighbourhood_cleansed). Join key to stg_neighbourhoods / dim_neighbourhoods."
+
+      - name: latitude
+        description: "Listing latitude."
+
+      - name: longitude
+        description: "Listing longitude."
+
+      - name: property_type
+        description: "Free-text property type as classified by Inside Airbnb (e.g. 'Entire home', 'Private room in rental unit')."
 
       - name: room_type
         description: "Listing category."
@@ -41,6 +62,30 @@ models:
         data_tests:
           - not_null
 
+      - name: bedrooms
+        description: "Number of bedrooms, as published by the host."
+
+      - name: bathrooms
+        description: "Number of bathrooms. Derived primarily by parsing bathrooms_text (more complete than the raw numeric column); falls back to the numeric column when text is also missing. 'Half-bath' variants map to 0.5."
+
+      - name: price
+        description: "Nightly listing price in ZAR, cast from a '$1,234.00'-style string to decimal. Null where the host left price blank (~17.6% of rows)."
+
+      - name: minimum_nights
+        description: "Minimum nights required for a booking."
+
+      - name: maximum_nights
+        description: "Maximum nights allowed for a booking."
+
+      - name: number_of_reviews
+        description: "Total review count for this listing, all-time."
+
+      - name: reviews_per_month
+        description: "Average reviews per month since the listing's first review."
+
+      - name: review_scores_rating
+        description: "Overall guest rating, typically on a 0-5 scale."
+
   - name: stg_calendar
     description: "Daily availability calendar, one row per listing per day. price/adjusted_price dropped: 100% null in this Inside Airbnb snapshot."
     columns:
@@ -55,9 +100,15 @@ models:
           - not_null
 
       - name: available
-        description: "Whether the listing was bookable on this date."
+        description: "Whether the listing was bookable (not booked/blocked) on this date."
         data_tests:
           - not_null
+
+      - name: minimum_nights
+        description: "Minimum nights required for a booking starting on this date."
+
+      - name: maximum_nights
+        description: "Maximum nights allowed for a booking starting on this date."
 
   - name: stg_reviews
     description: "Guest reviews, HTML tags stripped from comment text."
@@ -76,3 +127,15 @@ models:
               arguments:
                 to: ref('fact_listings')
                 field: listing_id
+
+      - name: review_date
+        description: "Date the review was posted."
+
+      - name: reviewer_id
+        description: "Identifier for the guest who left the review."
+
+      - name: reviewer_name
+        description: "First name of the reviewer, as published by Inside Airbnb."
+
+      - name: comments
+        description: "Review text. HTML <br/> tags stripped; otherwise unmodified guest-submitted text."

@@ -10,6 +10,9 @@ models:
           - unique
           - not_null
 
+      - name: neighbourhood_name
+        description: "Cleaned, title-cased neighbourhood (ward) name."
+
   - name: fact_listings
     description: "One row per listing, foreign-keyed to dim_neighbourhoods."
     columns:
@@ -19,6 +22,9 @@ models:
           - unique
           - not_null
 
+      - name: host_id
+        description: "Identifier for the host who owns this listing."
+
       - name: neighbourhood_id
         description: "Foreign key to dim_neighbourhoods."
         data_tests:
@@ -27,6 +33,45 @@ models:
               arguments:
                 to: ref('dim_neighbourhoods')
                 field: neighbourhood_id
+
+      - name: latitude
+        description: "Listing latitude."
+
+      - name: longitude
+        description: "Listing longitude."
+
+      - name: property_type
+        description: "Free-text property type as classified by Inside Airbnb."
+
+      - name: room_type
+        description: "Listing category: Entire home/apt, Private room, Shared room, or Hotel room."
+
+      - name: accommodates
+        description: "Max guest capacity."
+
+      - name: bedrooms
+        description: "Number of bedrooms."
+
+      - name: bathrooms
+        description: "Number of bathrooms, including half-baths (0.5 increments)."
+
+      - name: price
+        description: "Nightly listing price in ZAR. Null where the host left price blank."
+
+      - name: minimum_nights
+        description: "Minimum nights required for a booking."
+
+      - name: maximum_nights
+        description: "Maximum nights allowed for a booking."
+
+      - name: number_of_reviews
+        description: "Total review count for this listing, all-time."
+
+      - name: reviews_per_month
+        description: "Average reviews per month since the listing's first review."
+
+      - name: review_scores_rating
+        description: "Overall guest rating, typically on a 0-5 scale."
 
   - name: fact_calendar
     description: "One row per listing per day, with booking status and neighbourhood FK. Basis for occupancy analysis."
@@ -36,11 +81,6 @@ models:
         data_tests:
           - not_null
 
-      - name: date
-        description: "Calendar date."
-        data_tests:
-          - not_null
-
       - name: neighbourhood_id
         description: "Foreign key to dim_neighbourhoods."
         data_tests:
@@ -49,3 +89,20 @@ models:
               arguments:
                 to: ref('dim_neighbourhoods')
                 field: neighbourhood_id
+
+      - name: date
+        description: "Calendar date."
+        data_tests:
+          - not_null
+
+      - name: available
+        description: "Whether the listing was bookable (not booked/blocked) on this date."
+
+      - name: is_booked
+        description: "Inverse of available. True means the listing was booked or host-blocked on this date — the basis for occupancy rate calculations."
+
+      - name: minimum_nights
+        description: "Minimum nights required for a booking starting on this date."
+
+      - name: maximum_nights
+        description: "Maximum nights allowed for a booking starting on this date."
