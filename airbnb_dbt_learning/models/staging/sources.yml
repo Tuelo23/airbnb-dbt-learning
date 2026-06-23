@@ -12,3 +12,8 @@ sources:
         description: "Raw daily availability/pricing calendar from Inside Airbnb, Cape Town, 2025-06-25 snapshot. ~9.6M rows (one per listing per day)."
         meta:
           external_location: "read_csv_auto('data_raw/calendar.csv')"
+
+      - name: reviews
+        description: "Raw guest reviews from Inside Airbnb, Cape Town, 2025-06-25 snapshot. ~649K rows."
+        meta:
+          external_location: "read_csv_auto('data_raw/reviews.csv')"

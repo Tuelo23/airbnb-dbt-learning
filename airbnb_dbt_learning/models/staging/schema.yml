@@ -58,3 +58,21 @@ models:
         description: "Whether the listing was bookable on this date."
         data_tests:
           - not_null
+
+  - name: stg_reviews
+    description: "Guest reviews, HTML tags stripped from comment text."
+    columns:
+      - name: review_id
+        description: "Primary key from Inside Airbnb."
+        data_tests:
+          - unique
+          - not_null
+
+      - name: listing_id
+        description: "Foreign key to listings."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_listings')
+                field: listing_id
