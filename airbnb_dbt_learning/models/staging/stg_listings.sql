@@ -3,7 +3,8 @@ with source as (
     select
         id as listing_id,
         host_id,
-        neighbourhood,
+        neighbourhood as neighbourhood_raw_text,
+        neighbourhood_cleansed as neighbourhood_clean,
         latitude,
         longitude,
         property_type,
@@ -25,7 +26,8 @@ with source as (
 select
     listing_id,
     host_id,
-    neighbourhood,
+    neighbourhood_raw_text,
+    neighbourhood_clean,
     latitude,
     longitude,
     property_type,

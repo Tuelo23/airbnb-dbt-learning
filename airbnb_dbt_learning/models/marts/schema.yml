@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: dim_neighbourhoods
+    description: "One row per neighbourhood (Inside Airbnb ward classification)."
+    columns:
+      - name: neighbourhood_id
+        description: "Surrogate key."
+        data_tests:
+          - unique
+          - not_null
+
+  - name: fact_listings
+    description: "One row per listing, foreign-keyed to dim_neighbourhoods."
+    columns:
+      - name: listing_id
+        description: "Primary key from Inside Airbnb."
+        data_tests:
+          - unique
+          - not_null
+
+      - name: neighbourhood_id
+        description: "Foreign key to dim_neighbourhoods."
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_neighbourhoods')
+                field: neighbourhood_id
