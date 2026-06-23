@@ -14,3 +14,29 @@ models:
         description: "Title-cased, whitespace-normalized neighbourhood name. Blanks become 'Unknown'."
         data_tests:
           - not_null
+
+  - name: stg_listings
+    description: "Cleaned listings data: numeric price, derived bathrooms count."
+    columns:
+      - name: listing_id
+        description: "Primary key from Inside Airbnb."
+        data_tests:
+          - unique
+          - not_null
+
+      - name: room_type
+        description: "Listing category."
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - 'Entire home/apt'
+                  - 'Private room'
+                  - 'Shared room'
+                  - 'Hotel room'
+
+      - name: accommodates
+        description: "Max guest capacity."
+        data_tests:
+          - not_null
