@@ -40,3 +40,21 @@ models:
         description: "Max guest capacity."
         data_tests:
           - not_null
+
+  - name: stg_calendar
+    description: "Daily availability calendar, one row per listing per day. price/adjusted_price dropped: 100% null in this Inside Airbnb snapshot."
+    columns:
+      - name: listing_id
+        description: "Foreign key to listings."
+        data_tests:
+          - not_null
+
+      - name: date
+        description: "Calendar date for this availability record."
+        data_tests:
+          - not_null
+
+      - name: available
+        description: "Whether the listing was bookable on this date."
+        data_tests:
+          - not_null
