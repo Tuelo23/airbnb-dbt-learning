@@ -1,0 +1,7 @@
+airbnb_dbt_learning:
+  outputs:
+    dev:
+      type: duckdb
+      path: dev.duckdb
+      threads: 1
+  target: dev

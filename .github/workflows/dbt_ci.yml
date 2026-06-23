@@ -1,0 +1,34 @@
+name: dbt CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  dbt_build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dbt dependencies
+        working-directory: airbnb_dbt_learning
+        run: pip install -r requirements.txt
+
+      - name: Fetch raw data from Inside Airbnb
+        working-directory: airbnb_dbt_learning
+        run: |
+          mkdir -p data_raw
+          curl -sL "https://data.insideairbnb.com/south-africa/wc/cape-town/2025-06-25/data/listings.csv.gz" | gunzip > data_raw/listings.csv
+          curl -sL "https://data.insideairbnb.com/south-africa/wc/cape-town/2025-06-25/data/calendar.csv.gz" | gunzip > data_raw/calendar.csv
+          curl -sL "https://data.insideairbnb.com/south-africa/wc/cape-town/2025-06-25/data/reviews.csv.gz" | gunzip > data_raw/reviews.csv
+
+      - name: dbt build (seed + run + test)
+        working-directory: airbnb_dbt_learning
+        run: dbt build --profiles-dir .
